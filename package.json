@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/api-plugin-discounts-codes",
+  "name": "@codistan-isb/api-plugin-discounts-codes",
   "description": "Discount codes service for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
