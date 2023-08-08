@@ -9,8 +9,8 @@ const inputSchema = new SimpleSchema({
   shopId: String,
   token: {
     type: String,
-    optional: true
-  }
+    optional: true,
+  },
 });
 
 /**
@@ -33,8 +33,11 @@ export default async function applyDiscountCodeToCart(context, input) {
 
   let userCount = 0;
   let orderCount = 0;
-  let cart = await getCart(context, shopId, cartId, { cartToken: token, throwIfNotFound: false });
-
+  let cart = await getCart(context, shopId, cartId, {
+    cartToken: token,
+    throwIfNotFound: false,
+  });
+  console.log("cart ", cart);
   // If we didn't find a cart, it means it belongs to another user,
   // not the currently logged in user.
   // Check to make sure current user has admin permission.
@@ -44,16 +47,24 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    await context.validatePermissions(`reaction:legacy:carts:${cartId}`, "update", {
-      shopId,
-      owner: cart.accountId
-    });
+    await context.validatePermissions(
+      `reaction:legacy:carts:${cartId}`,
+      "update",
+      {
+        shopId,
+        owner: cart.accountId,
+      }
+    );
   }
 
   const objectToApplyDiscount = cart;
 
   const discount = await Discounts.findOne({ code: discountCode });
-  if (!discount) throw new ReactionError("not-found", `No discount found for code ${discountCode}`);
+  if (!discount)
+    throw new ReactionError(
+      "not-found",
+      `No discount found for code ${discountCode}`
+    );
 
   const { conditions } = discount;
   let accountLimitExceeded = false;
@@ -62,15 +73,22 @@ export default async function applyDiscountCodeToCart(context, input) {
   // existing usage count
   if (discount.transactions) {
     const users = Array.from(discount.transactions, (trans) => trans.userId);
-    const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
+    const transactionCount = new Map(
+      [...new Set(users)].map((userX) => [
+        userX,
+        users.filter((userY) => userY === userX).length,
+      ])
+    );
     const orders = Array.from(discount.transactions, (trans) => trans.cartId);
     userCount = transactionCount.get(userId);
     orderCount = orders.length;
   }
   // check limits
   if (conditions) {
-    if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
-    if (conditions.redemptionLimit) discountLimitExceeded = conditions.redemptionLimit <= orderCount;
+    if (conditions.accountLimit)
+      accountLimitExceeded = conditions.accountLimit <= userCount;
+    if (conditions.redemptionLimit)
+      discountLimitExceeded = conditions.redemptionLimit <= orderCount;
   }
 
   // validate basic limit handling
@@ -89,7 +107,7 @@ export default async function applyDiscountCodeToCart(context, input) {
     currencyCode: objectToApplyDiscount.currencyCode,
     data: {
       discountId: discount._id,
-      code: discount.code
+      code: discount.code,
     },
     displayName: `Discount Code: ${discount.code}`,
     method: discount.calculation.method,
@@ -99,7 +117,7 @@ export default async function applyDiscountCodeToCart(context, input) {
     processor: discount.discountMethod,
     shopId: objectToApplyDiscount.shopId,
     status: "created",
-    transactionId: Random.id()
+    transactionId: Random.id(),
   });
 
   // Instead of directly updating cart, we add the discount billing
