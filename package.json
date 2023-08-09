@@ -1,7 +1,7 @@
 {
-  "name": "@codistan-isb/api-plugin-discounts-codes",
+  "name": "@codistan-isb/ranchers-api-plugin-discounts-codes",
   "description": "Discount codes service for the Reaction API",
-  "version": "1.0.1-development",
+  "version": "1.0.2-development",
   "main": "index.js",
   "type": "module",
   "engines": {
