@@ -29,7 +29,8 @@ export default async function applyDiscountCodeToCart(context, input) {
 
   const { cartId, discountCode, shopId, token } = input;
   const { collections, userId } = context;
-  const { Cart, Discounts } = collections;
+  const { Cart, Discounts, Accounts } = collections;
+  console.log("input token ", token);
 
   let userCount = 0;
   let orderCount = 0;
@@ -37,12 +38,13 @@ export default async function applyDiscountCodeToCart(context, input) {
     cartToken: token,
     throwIfNotFound: false,
   });
-  console.log("cart ", cart);
+  // console.log("cart ", cart);
   // If we didn't find a cart, it means it belongs to another user,
   // not the currently logged in user.
   // Check to make sure current user has admin permission.
   if (!cart) {
     cart = await Cart.findOne({ _id: cartId });
+    // console.log("cart 2 ", cart);
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found");
     }
@@ -56,7 +58,7 @@ export default async function applyDiscountCodeToCart(context, input) {
       }
     );
   }
-
+  
   const objectToApplyDiscount = cart;
 
   const discount = await Discounts.findOne({ code: discountCode });
