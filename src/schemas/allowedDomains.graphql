@@ -1,0 +1,67 @@
+type allowedDomains {
+  _id: ID
+  domain1: String
+  domain1DealDiscount: Int
+  domain1ItemDiscount: Int
+  domain2: String
+  domain2DealDiscount: Int
+  domain2ItemDiscount: Int
+  domain3: String
+  domain3DealDiscount: Int
+  domain3ItemDiscount: Int
+  domain4: String
+  domain4DealDiscount: Int
+  domain4ItemDiscount: Int
+  domain5: String
+  domain5DealDiscount: Int
+  domain5ItemDiscount: Int
+  domain6: String
+  domain6DealDiscount: Int
+  domain6ItemDiscount: Int
+  createdAt: DateTime
+  shopId: String
+}
+type AllowedDomainEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The discount code"
+  node: allowedDomains
+}
+type AllowedDomainConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [AllowedDomainEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [allowedDomains]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+extend type Query {
+  getAllAllowedDomains(
+    "Provide a shop ID from which you want to get discount codes"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+  ): AllowedDomainConnection
+}

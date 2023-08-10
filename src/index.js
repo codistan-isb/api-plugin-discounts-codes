@@ -21,19 +21,26 @@ export default async function register(app) {
     name: "discounts-codes",
     version: app.context.appVersion,
     i18n,
+    collections: {
+      AllowedDomains: {
+        name: "AllowedDomains",
+        updatedAt: { type: Date, default: Date.now },
+        createdAt: { type: Date, default: Date.now },
+      },
+    },
     functionsByType: {
       "discounts/codes/credit": [getCreditOffDiscount],
       "discounts/codes/discount": [getPercentageOffDiscount],
       "discounts/codes/sale": [getItemPriceDiscount],
       "discounts/codes/shipping": [getShippingDiscount],
-      "startup": [startup]
+      startup: [startup],
     },
     graphQL: {
       resolvers,
-      schemas
+      schemas,
     },
     mutations,
     policies,
-    queries
+    queries,
   });
 }

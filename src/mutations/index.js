@@ -9,5 +9,5 @@ export default {
   createDiscountCode,
   deleteDiscountCode,
   removeDiscountCodeFromCart,
-  updateDiscountCode
+  updateDiscountCode,
 };
