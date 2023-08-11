@@ -58,7 +58,7 @@ export default async function applyDiscountCodeToCart(context, input) {
       }
     );
   }
-  
+
   const objectToApplyDiscount = cart;
 
   const discount = await Discounts.findOne({ code: discountCode });
@@ -101,7 +101,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   if (!cart.billing) {
     cart.billing = [];
   }
-
+  console.log("discount ", discount);
   cart.billing.push({
     _id: Random.id(),
     amount: discount.discount,
@@ -121,7 +121,7 @@ export default async function applyDiscountCodeToCart(context, input) {
     status: "created",
     transactionId: Random.id(),
   });
-
+  // cart.isDiscounted = true;
   // Instead of directly updating cart, we add the discount billing
   // object from the existing cart, then pass to `saveCart`
   // to re-run cart through all transforms and validations.
