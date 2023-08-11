@@ -15,7 +15,14 @@ export default async function getPercentageOffDiscount(
   collections
 ) {
   const { Cart, Discounts, Accounts, AllowedDomains } = collections;
-
+  let discountDomains = [
+    "codistan.org",
+    "rancherscafe.com",
+    "bizb.store",
+    "movingstonedigital.com",
+    "paklogics.com",
+    "renome.pk",
+  ];
   const discountMethod = await Discounts.findOne({ _id: discountId });
   if (!discountMethod)
     throw new ReactionError("not-found", "Discount not found");
@@ -50,75 +57,18 @@ export default async function getPercentageOffDiscount(
   // console.log("item.subtotal.amount ", item.subtotal.amount);
 
   for (const item of cart.items) {
-    console.log("item discount ", !item.isDeal);
-    if (customerDomain === AllowedDomainsResp.domain1) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain1ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain1DealDiscount) / 100;
-      }
-    } else if (customerDomain === AllowedDomainsResp.domain2) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain2ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain2DealDiscount) / 100;
-      }
-    } else if (customerDomain === AllowedDomainsResp.domain3) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain3ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain3DealDiscount) / 100;
-      }
-    } else if (customerDomain === AllowedDomainsResp.domain4) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain4ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain4DealDiscount) / 100;
-      }
-    } else if (customerDomain === AllowedDomainsResp.domain5) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain5ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain5DealDiscount) / 100;
-      }
-    } else if (customerDomain === AllowedDomainsResp.domain6) {
-      if (item.isDeal) {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain6ItemDiscount) / 100;
-      } else {
-        discount +=
-          (item.subtotal.amount * AllowedDomainsResp.domain6DealDiscount) / 100;
+    // console.log("item ", item);
+    // console.log("item discount ", item.isDeal);
+    if (discountDomains.includes(customerDomain)) {
+      if (item.isDeal === true) {
+        console.log("true");
+        discount += (item.subtotal.amount * 20) / 100;
+      } else if (item.isDeal === false) {
+        console.log("Not true");
+        discount += (item.subtotal.amount * 30) / 100;
       }
     }
-    // if (customerEmail.includes("codistan.org")) {
-    //   if (!item.isDeal) {
-    //     discount += (item.subtotal.amount * discountAmount) / 100;
-    //   }
-    // }
   }
-  // console.log("final item discount ", discount);
-  // if (discount) {
-  //   console.log("Here");
-  //   const updatedCart = {
-  //     isDiscounted: true,
-  //     updatedAt: new Date().toISOString(),
-  //   };
-  //   const updatedCartResp = await Cart.findOneAndUpdate(
-  //     { _id: cartId },
-  //     { $set: updatedCart }
-  //   );
-  //   console.log("updatedCartResp ", updatedCartResp);
-  // }
-  console.log("Discount ", discount);
+  // console.log("Discount ", discount);
   return discount;
 }
