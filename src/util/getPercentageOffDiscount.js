@@ -52,7 +52,7 @@ export default async function getPercentageOffDiscount(
   for (const item of cart.items) {
     console.log("item discount ", !item.isDeal);
     if (customerDomain === AllowedDomainsResp.domain1) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain1ItemDiscount) / 100;
       } else {
@@ -60,7 +60,7 @@ export default async function getPercentageOffDiscount(
           (item.subtotal.amount * AllowedDomainsResp.domain1DealDiscount) / 100;
       }
     } else if (customerDomain === AllowedDomainsResp.domain2) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain2ItemDiscount) / 100;
       } else {
@@ -68,7 +68,7 @@ export default async function getPercentageOffDiscount(
           (item.subtotal.amount * AllowedDomainsResp.domain2DealDiscount) / 100;
       }
     } else if (customerDomain === AllowedDomainsResp.domain3) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain3ItemDiscount) / 100;
       } else {
@@ -76,7 +76,7 @@ export default async function getPercentageOffDiscount(
           (item.subtotal.amount * AllowedDomainsResp.domain3DealDiscount) / 100;
       }
     } else if (customerDomain === AllowedDomainsResp.domain4) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain4ItemDiscount) / 100;
       } else {
@@ -84,7 +84,7 @@ export default async function getPercentageOffDiscount(
           (item.subtotal.amount * AllowedDomainsResp.domain4DealDiscount) / 100;
       }
     } else if (customerDomain === AllowedDomainsResp.domain5) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain5ItemDiscount) / 100;
       } else {
@@ -92,7 +92,7 @@ export default async function getPercentageOffDiscount(
           (item.subtotal.amount * AllowedDomainsResp.domain5DealDiscount) / 100;
       }
     } else if (customerDomain === AllowedDomainsResp.domain6) {
-      if (!item.isDeal) {
+      if (item.isDeal) {
         discount +=
           (item.subtotal.amount * AllowedDomainsResp.domain6ItemDiscount) / 100;
       } else {
