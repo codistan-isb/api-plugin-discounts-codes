@@ -58,12 +58,13 @@ export default async function getPercentageOffDiscount(
 
   for (const item of cart.items) {
     // console.log("item ", item);
-    // console.log("item discount ", item.isDeal);
+    console.log("item discount ", item.isDeal);
     if (discountDomains.includes(customerDomain)) {
-      if (item.isDeal === true) {
-        console.log("true");
-        discount += (item.subtotal.amount * 20) / 100;
-      } else if (item.isDeal === false) {
+      // if (item.isDeal === true) {
+      //   console.log("true");
+      //   discount += (item.subtotal.amount * 20) / 100;
+      // } else
+      if (item.isDeal === false) {
         console.log("Not true");
         discount += (item.subtotal.amount * 30) / 100;
       }
