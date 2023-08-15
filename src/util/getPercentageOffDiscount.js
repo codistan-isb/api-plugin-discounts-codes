@@ -34,31 +34,43 @@ export default async function getPercentageOffDiscount(
     _id: cart.accountId,
   });
   let AllowedDomainsResp = await AllowedDomains.findOne({});
-  console.log("AllowedDomainsResp ", AllowedDomainsResp);
+  // console.log("AllowedDomainsResp ", AllowedDomainsResp);
   let customerEmail;
+  // console.log(
+  //   "cartOwnerDetail?.emails[0]?.verified ",
+  //   cartOwnerDetail?.emails[0]?.verified
+  // );
   if (cartOwnerDetail) {
-    customerEmail = cartOwnerDetail?.emails[0]?.address;
-  }
-  let customerDomain = customerEmail.split("@")[1];
-  let discount = 0;
-  let dealDiscount;
-  let itemDiscount;
-  let discountDomains;
-  if (AllowedDomainsResp) {
-    dealDiscount = Number(AllowedDomainsResp?.DealDiscount);
-    itemDiscount = Number(AllowedDomainsResp?.ItemDiscount);
-    discountDomains = AllowedDomainsResp?.domains;
-  }
-  for (const item of cart.items) {
-    if (discountDomains?.includes(customerDomain)) {
-      if (item.isDeal === true) {
-        console.log("true");
-        discount += (item.subtotal.amount * dealDiscount) / 100;
-      } else if (item.isDeal === false) {
-        console.log("Not true");
-        discount += (item.subtotal.amount * itemDiscount) / 100;
-      }
+    if (cartOwnerDetail?.emails[0]?.verified === true) {
+      customerEmail = cartOwnerDetail?.emails[0]?.address;
     }
   }
-  return discount;
+
+  let discount = 0;
+  let customerDomain;
+  if (customerEmail) {
+    customerDomain = customerEmail?.split("@")[1];
+    let dealDiscount;
+    let itemDiscount;
+    let discountDomains;
+    if (AllowedDomainsResp) {
+      dealDiscount = Number(AllowedDomainsResp?.DealDiscount);
+      itemDiscount = Number(AllowedDomainsResp?.ItemDiscount);
+      discountDomains = AllowedDomainsResp?.domains;
+    }
+    for (const item of cart.items) {
+      if (discountDomains?.includes(customerDomain)) {
+        if (item.isDeal === true) {
+          console.log("true");
+          discount += (item.subtotal.amount * dealDiscount) / 100;
+        } else if (item.isDeal === false) {
+          console.log("Not true");
+          discount += (item.subtotal.amount * itemDiscount) / 100;
+        }
+      }
+    }
+    return discount;
+  } else {
+    return discount;
+  }
 }

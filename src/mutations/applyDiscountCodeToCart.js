@@ -101,7 +101,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   if (!cart.billing) {
     cart.billing = [];
   }
-  console.log("discount ", discount);
+  // console.log("discount ", discount);
   cart.billing.push({
     _id: Random.id(),
     amount: discount.discount,
