@@ -15,14 +15,7 @@ export default async function getPercentageOffDiscount(
   collections
 ) {
   const { Cart, Discounts, Accounts, AllowedDomains } = collections;
-  let discountDomains = [
-    "codistan.org",
-    "rancherscafe.com",
-    "bizb.store",
-    "movingstonedigital.com",
-    "paklogics.com",
-    "renome.pk",
-  ];
+
   const discountMethod = await Discounts.findOne({ _id: discountId });
   if (!discountMethod)
     throw new ReactionError("not-found", "Discount not found");
@@ -37,39 +30,35 @@ export default async function getPercentageOffDiscount(
 
   const cart = await Cart.findOne({ _id: cartId });
   if (!cart) throw new ReactionError("not-found", "Cart not found");
-  // console.log("Full cart ", cart);
-  let certOwnerDetail = await Accounts.findOne({
+  let cartOwnerDetail = await Accounts.findOne({
     _id: cart.accountId,
   });
-
-  // console.log("certOwnerDetail ", certOwnerDetail?.emails[0]?.address);
   let AllowedDomainsResp = await AllowedDomains.findOne({});
-  // console.log("AllowedDomainsResp ", AllowedDomainsResp);
+  console.log("AllowedDomainsResp ", AllowedDomainsResp);
   let customerEmail;
-  if (certOwnerDetail) {
-    customerEmail = certOwnerDetail?.emails[0]?.address;
+  if (cartOwnerDetail) {
+    customerEmail = cartOwnerDetail?.emails[0]?.address;
   }
   let customerDomain = customerEmail.split("@")[1];
-  // console.log("customerDomain ", customerDomain);
-
   let discount = 0;
-  // console.log("discountAmount ", discountAmount);
-  // console.log("item.subtotal.amount ", item.subtotal.amount);
-
+  let dealDiscount;
+  let itemDiscount;
+  let discountDomains;
+  if (AllowedDomainsResp) {
+    dealDiscount = Number(AllowedDomainsResp?.DealDiscount);
+    itemDiscount = Number(AllowedDomainsResp?.ItemDiscount);
+    discountDomains = AllowedDomainsResp?.domains;
+  }
   for (const item of cart.items) {
-    // console.log("item ", item);
-    console.log("item discount ", item.isDeal);
-    if (discountDomains.includes(customerDomain)) {
-      // if (item.isDeal === true) {
-      //   console.log("true");
-      //   discount += (item.subtotal.amount * 20) / 100;
-      // } else
-      if (item.isDeal === false) {
+    if (discountDomains?.includes(customerDomain)) {
+      if (item.isDeal === true) {
+        console.log("true");
+        discount += (item.subtotal.amount * dealDiscount) / 100;
+      } else if (item.isDeal === false) {
         console.log("Not true");
-        discount += (item.subtotal.amount * 20) / 100;
+        discount += (item.subtotal.amount * itemDiscount) / 100;
       }
     }
   }
-  // console.log("Discount ", discount);
   return discount;
 }

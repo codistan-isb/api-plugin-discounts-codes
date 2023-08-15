@@ -1,23 +1,8 @@
 type allowedDomains {
   _id: ID
-  domain1: String
-  domain1DealDiscount: Int
-  domain1ItemDiscount: Int
-  domain2: String
-  domain2DealDiscount: Int
-  domain2ItemDiscount: Int
-  domain3: String
-  domain3DealDiscount: Int
-  domain3ItemDiscount: Int
-  domain4: String
-  domain4DealDiscount: Int
-  domain4ItemDiscount: Int
-  domain5: String
-  domain5DealDiscount: Int
-  domain5ItemDiscount: Int
-  domain6: String
-  domain6DealDiscount: Int
-  domain6ItemDiscount: Int
+  domains: [String]
+  DealDiscount: Float
+  ItemDiscount: Float
   createdAt: DateTime
   shopId: String
 }
