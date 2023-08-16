@@ -35,34 +35,36 @@ export default async function getPercentageOffDiscount(
   });
   let AllowedDomainsResp = await AllowedDomains.findOne({});
   let customerEmail;
+  let discountDomains;
+  discountDomains = AllowedDomainsResp?.domains;
+
   if (cartOwnerDetail) {
     // if (cartOwnerDetail?.emails[0]?.verified === true) {
-      customerEmail = cartOwnerDetail?.emails[0]?.address;
+    customerEmail = cartOwnerDetail?.emails[0]?.address;
     // }
   }
 
   let discount = 0;
   let customerDomain;
-  if (customerEmail) {
-    customerDomain = customerEmail?.split("@")[1];
+  customerDomain = customerEmail?.split("@")[1];
+
+  if (discountDomains?.includes(customerDomain)) {
     let dealDiscount;
     let itemDiscount;
-    let discountDomains;
     if (AllowedDomainsResp) {
       dealDiscount = Number(AllowedDomainsResp?.DealDiscount);
       itemDiscount = Number(AllowedDomainsResp?.ItemDiscount);
-      discountDomains = AllowedDomainsResp?.domains;
     }
     for (const item of cart.items) {
-      if (discountDomains?.includes(customerDomain)) {
-        if (item.isDeal === true) {
-          console.log("true");
-          discount += (item.subtotal.amount * dealDiscount) / 100;
-        } else if (item.isDeal === false) {
-          console.log("Not true");
-          discount += (item.subtotal.amount * itemDiscount) / 100;
-        }
+      // if (discountDomains?.includes(customerDomain)) {
+      if (item.isDeal === true) {
+        console.log("true");
+        discount += (item.subtotal.amount * dealDiscount) / 100;
+      } else if (item.isDeal === false) {
+        console.log("Not true");
+        discount += (item.subtotal.amount * itemDiscount) / 100;
       }
+      // }
     }
     return discount;
   } else {
