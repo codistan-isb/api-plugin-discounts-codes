@@ -38,13 +38,11 @@ export default async function applyDiscountCodeToCart(context, input) {
     cartToken: token,
     throwIfNotFound: false,
   });
-  // console.log("cart ", cart);
   // If we didn't find a cart, it means it belongs to another user,
   // not the currently logged in user.
   // Check to make sure current user has admin permission.
   if (!cart) {
     cart = await Cart.findOne({ _id: cartId });
-    // console.log("cart 2 ", cart);
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found");
     }
@@ -101,7 +99,6 @@ export default async function applyDiscountCodeToCart(context, input) {
   if (!cart.billing) {
     cart.billing = [];
   }
-  // console.log("discount ", discount);
   cart.billing.push({
     _id: Random.id(),
     amount: discount.discount,
@@ -121,7 +118,6 @@ export default async function applyDiscountCodeToCart(context, input) {
     status: "created",
     transactionId: Random.id(),
   });
-  // cart.isDiscounted = true;
   // Instead of directly updating cart, we add the discount billing
   // object from the existing cart, then pass to `saveCart`
   // to re-run cart through all transforms and validations.
