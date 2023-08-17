@@ -5,9 +5,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 export default async function getAllAllowedDomains(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;
-  if (context.user === undefined || context.user === null) {
-    throw new ReactionError("access-denied", "Please login first");
-  }
+  // if (context.user === undefined || context.user === null) {
+  //   throw new ReactionError("access-denied", "Please login first");
+  // }
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const query = await context.queries.getAllAllowedDomains(context, shopId);
