@@ -64,9 +64,9 @@ export default async function getPercentageOffDiscount(
         console.log("Not true");
         discount += (item.subtotal.amount * itemDiscount) / 100;
       }
-      return discount;
       // }
     }
+    return discount;
   } else {
     return discount;
   }
