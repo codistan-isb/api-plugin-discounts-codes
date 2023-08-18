@@ -39,9 +39,9 @@ export default async function getPercentageOffDiscount(
   discountDomains = AllowedDomainsResp?.domains;
 
   if (cartOwnerDetail) {
-    if (cartOwnerDetail?.emails[0]?.verified === true) {
-      customerEmail = cartOwnerDetail?.emails[0]?.address;
-    }
+    // if (cartOwnerDetail?.emails[0]?.verified === true) {
+    customerEmail = cartOwnerDetail?.emails[0]?.address;
+    // }
   }
 
   let discount = 0;
