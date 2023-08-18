@@ -29,7 +29,12 @@ type AllowedDomainConnection {
   "The total number of nodes that match your query"
   totalCount: Int!
 }
+type calculateDiscount {
+  totalAmount: Float
+  totalAccounts: Float
+}
 extend type Query {
+  getAllDiscountCount: calculateDiscount
   getAllAllowedDomains(
     "Provide a shop ID from which you want to get discount codes"
     shopId: ID!

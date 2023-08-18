@@ -46,11 +46,11 @@ export default async function getPercentageOffDiscount(
 
   let discount = 0;
   let customerDomain;
+  customerDomain = customerEmail?.split("@")[1];
 
-  if (customerEmail) {
+  if (discountDomains?.includes(customerDomain)) {
     let dealDiscount;
     let itemDiscount;
-    customerDomain = customerEmail?.split("@")[1];
     if (AllowedDomainsResp) {
       dealDiscount = Number(AllowedDomainsResp?.DealDiscount);
       itemDiscount = Number(AllowedDomainsResp?.ItemDiscount);
@@ -64,9 +64,9 @@ export default async function getPercentageOffDiscount(
         console.log("Not true");
         discount += (item.subtotal.amount * itemDiscount) / 100;
       }
+      return discount;
       // }
     }
-    return discount;
   } else {
     return discount;
   }
