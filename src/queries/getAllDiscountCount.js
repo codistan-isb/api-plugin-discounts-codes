@@ -1,6 +1,6 @@
 export default async function getAllDiscountCount(context, shopId) {
   const { collections } = context;
-  const { Orders } = collections;
+  const { Orders, Products } = collections;
 
   try {
     const orders = await Orders.find({}).toArray();
@@ -20,9 +20,13 @@ export default async function getAllDiscountCount(context, shopId) {
       return discountAmount > 0 && order.workflow?.status !== "canceled";
     }).length;
 
-    console.log("Total discount amount:", discountTotal.toFixed(2));
-    console.log("Total orders with discount:", totalOrdersWithDiscount);
-
+    // console.log("Total discount amount:", discountTotal.toFixed(2));
+    // console.log("Total orders with discount:", totalOrdersWithDiscount);
+    // let data = await Products.updateMany(
+    //   { ancestors: ["BztCdq4f3FG2goXk2"] },
+    //   { $set: { price: 999.0 } }
+    // );
+    // console.log("data ", data);
     return {
       totalAmount: discountTotal.toFixed(2),
       totalAccounts: totalOrdersWithDiscount,

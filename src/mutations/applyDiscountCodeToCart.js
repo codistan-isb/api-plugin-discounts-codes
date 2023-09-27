@@ -30,7 +30,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   const { cartId, discountCode, shopId, token } = input;
   const { collections, userId } = context;
   const { Cart, Discounts, Accounts } = collections;
-  console.log("input token ", token);
+  // console.log("input token ", token);
 
   let userCount = 0;
   let orderCount = 0;
